@@ -1,11 +1,11 @@
 package main
 
 import (
-	config "api-go/src"
-	"api-go/src/data/database"
-	"api-go/src/data/repositories"
-	logic "api-go/src/domain/services"
-	handlers "api-go/src/handlers"
+	handlers "api-go/src/adapters/http/handlers"
+	"api-go/src/adapters/persistence/repositories"
+	logic "api-go/src/domain/usecases"
+	config "api-go/src/infraestructure"
+	"api-go/src/infraestructure/database"
 	"api-go/src/routes"
 	"log"
 
@@ -28,8 +28,8 @@ func main() {
 	emergencyRepository := repositories.NewEmergencyRepositoryImpl(db)
 
 	// servicios
-	userService := logic.NewUserService(userRepository)
-	emergencyService := logic.NewEmergencyService(emergencyRepository)
+	userService := logic.NewUserUsecase(userRepository)
+	emergencyService := logic.NewEmergencyUsecase(emergencyRepository)
 
 	// handlers
 	userHandler := handlers.NewUserHandler(userService)

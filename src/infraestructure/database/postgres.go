@@ -1,7 +1,7 @@
 package database
 
 import (
-	config "api-go/src"
+	config "api-go/src/infraestructure"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

@@ -1,7 +1,7 @@
 package routes
 
 import (
-	handlers "api-go/src/handlers"
+	handlers "api-go/src/adapters/http/handlers"
 
 	"github.com/gin-gonic/gin"
 )

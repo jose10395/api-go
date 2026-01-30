@@ -2,7 +2,7 @@ package http
 
 import (
 	"api-go/src/domain/entities"
-	logic "api-go/src/domain/services"
+	logic "api-go/src/domain/usecases"
 	"net/http"
 	"strconv"
 
@@ -10,12 +10,12 @@ import (
 )
 
 type EmergencyHandler struct {
-	emergencyService *logic.EmergencyService
+	emergencyUsecase *logic.EmergencyUsecase
 }
 
-func NewEmergencyHandler(emergencyService *logic.EmergencyService) *EmergencyHandler {
+func NewEmergencyHandler(emergencyUsecase *logic.EmergencyUsecase) *EmergencyHandler {
 	return &EmergencyHandler{
-		emergencyService: emergencyService,
+		emergencyUsecase: emergencyUsecase,
 	}
 }
 
@@ -28,7 +28,7 @@ func (uh *EmergencyHandler) Create(c *gin.Context) {
 		return
 	}
 
-	if err := uh.emergencyService.Create(&input); err != nil {
+	if err := uh.emergencyUsecase.Create(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -45,7 +45,7 @@ func (uh *EmergencyHandler) FindByID(c *gin.Context) {
 		return
 	}
 
-	user, err := uh.emergencyService.FindByID(uint(idUint))
+	user, err := uh.emergencyUsecase.FindByID(uint(idUint))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -56,7 +56,7 @@ func (uh *EmergencyHandler) FindByID(c *gin.Context) {
 
 // GET /emergencies
 func (uh *EmergencyHandler) FindAll(c *gin.Context) {
-	emergencias, err := uh.emergencyService.FindAll()
+	emergencias, err := uh.emergencyUsecase.FindAll()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

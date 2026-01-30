@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"api-go/src/data/models"
+	"api-go/src/adapters/persistence/models"
 	"api-go/src/domain/entities"
 
 	"gorm.io/gorm"

@@ -2,7 +2,7 @@ package http
 
 import (
 	"api-go/src/domain/entities"
-	logic "api-go/src/domain/services"
+	logic "api-go/src/domain/usecases"
 	"net/http"
 	"strconv"
 
@@ -10,12 +10,12 @@ import (
 )
 
 type UserHandler struct {
-	userService *logic.UserService
+	userUsecase *logic.UserUsecase
 }
 
-func NewUserHandler(userService *logic.UserService) *UserHandler {
+func NewUserHandler(userUsecase *logic.UserUsecase) *UserHandler {
 	return &UserHandler{
-		userService: userService,
+		userUsecase: userUsecase,
 	}
 }
 
@@ -28,7 +28,7 @@ func (uh *UserHandler) Create(c *gin.Context) {
 		return
 	}
 
-	if err := uh.userService.Create(&input); err != nil {
+	if err := uh.userUsecase.Create(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -45,7 +45,7 @@ func (uh *UserHandler) FindByID(c *gin.Context) {
 		return
 	}
 
-	user, err := uh.userService.FindByID(uint(idUint))
+	user, err := uh.userUsecase.FindByID(uint(idUint))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -56,7 +56,7 @@ func (uh *UserHandler) FindByID(c *gin.Context) {
 
 // GET /users
 func (uh *UserHandler) FindAll(c *gin.Context) {
-	users, err := uh.userService.FindAll()
+	users, err := uh.userUsecase.FindAll()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
