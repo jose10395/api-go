@@ -7,15 +7,15 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserGormRepository struct {
+type UserRepositoryImpl struct {
 	db *gorm.DB
 }
 
-func NewUserGormRepository(db *gorm.DB) *UserGormRepository {
-	return &UserGormRepository{db: db}
+func NewUserRepositoryImpl(db *gorm.DB) *UserRepositoryImpl {
+	return &UserRepositoryImpl{db: db}
 }
 
-func (r *UserGormRepository) Create(user *entities.User) error {
+func (r *UserRepositoryImpl) Create(user *entities.User) error {
 	model := models.UserModel{
 		Name:  user.Name,
 		Email: user.Email,
@@ -29,7 +29,7 @@ func (r *UserGormRepository) Create(user *entities.User) error {
 	return nil
 }
 
-func (r *UserGormRepository) FindAll() ([]entities.User, error) {
+func (r *UserRepositoryImpl) FindAll() ([]entities.User, error) {
 	var modelsList []models.UserModel
 
 	if err := r.db.Find(&modelsList).Error; err != nil {
@@ -48,7 +48,7 @@ func (r *UserGormRepository) FindAll() ([]entities.User, error) {
 	return users, nil
 }
 
-func (r *UserGormRepository) FindByID(id uint) (*entities.User, error) {
+func (r *UserRepositoryImpl) FindByID(id uint) (*entities.User, error) {
 	var model models.UserModel
 
 	if err := r.db.First(&model, id).Error; err != nil {

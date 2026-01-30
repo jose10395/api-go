@@ -13,13 +13,13 @@ type EmergencyHandler struct {
 	emergencyService *logic.EmergencyService
 }
 
-func NewEmergenciaHandler(emergencyService *logic.EmergencyService) *EmergencyHandler {
+func NewEmergencyHandler(emergencyService *logic.EmergencyService) *EmergencyHandler {
 	return &EmergencyHandler{
 		emergencyService: emergencyService,
 	}
 }
 
-// POST /emergencias
+// POST /emergencies
 func (uh *EmergencyHandler) Create(c *gin.Context) {
 	var input entities.Emergency
 
@@ -36,7 +36,7 @@ func (uh *EmergencyHandler) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, input)
 }
 
-// GET /emergencias/:id
+// GET /emergencies/:id
 func (uh *EmergencyHandler) FindByID(c *gin.Context) {
 	idParam := c.Param("id")
 	idUint, err := strconv.ParseUint(idParam, 10, 64)
@@ -54,7 +54,7 @@ func (uh *EmergencyHandler) FindByID(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-// GET /emergencias
+// GET /emergencies
 func (uh *EmergencyHandler) FindAll(c *gin.Context) {
 	emergencias, err := uh.emergencyService.FindAll()
 	if err != nil {

@@ -11,14 +11,13 @@ func SetupRoutes(
 	userHandler *handlers.UserHandler,
 	emergencyHandler *handlers.EmergencyHandler,
 ) {
-	// Ruta de health check
+
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "Hola Joven, su API creo que ya sirve... 🚀",
 		})
 	})
 
-	// Rutas de usuarios
 	users := r.Group("/users")
 	{
 		users.POST("", userHandler.Create)
@@ -26,7 +25,6 @@ func SetupRoutes(
 		users.GET("/:id", userHandler.FindByID)
 	}
 
-	// Rutas de emergencias
 	emergencies := r.Group("/emergencies")
 	{
 		emergencies.POST("", emergencyHandler.Create)

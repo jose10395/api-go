@@ -24,8 +24,8 @@ func main() {
 	r := gin.Default()
 
 	// repositorios
-	userRepository := repositories.NewUserGormRepository(db)
-	emergencyRepository := repositories.NewEmergenciaGormRepository(db)
+	userRepository := repositories.NewUserRepositoryImpl(db)
+	emergencyRepository := repositories.NewEmergencyRepositoryImpl(db)
 
 	// servicios
 	userService := logic.NewUserService(userRepository)
@@ -33,7 +33,7 @@ func main() {
 
 	// handlers
 	userHandler := handlers.NewUserHandler(userService)
-	emergencyHandler := handlers.NewEmergenciaHandler(emergencyService)
+	emergencyHandler := handlers.NewEmergencyHandler(emergencyService)
 
 	routes.SetupRoutes(r, userHandler, emergencyHandler)
 

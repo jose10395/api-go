@@ -7,15 +7,15 @@ import (
 	"gorm.io/gorm"
 )
 
-type EmergenciaGormRepository struct {
+type EmergencyRepositoryImpl struct {
 	db *gorm.DB
 }
 
-func NewEmergenciaGormRepository(db *gorm.DB) *EmergenciaGormRepository {
-	return &EmergenciaGormRepository{db: db}
+func NewEmergencyRepositoryImpl(db *gorm.DB) *EmergencyRepositoryImpl {
+	return &EmergencyRepositoryImpl{db: db}
 }
 
-func (r *EmergenciaGormRepository) Create(e *entities.Emergency) error {
+func (r *EmergencyRepositoryImpl) Create(e *entities.Emergency) error {
 	model := models.EmergencyModel{
 		Descripcion: e.Descripcion,
 		Fecha:       e.Fecha,
@@ -30,16 +30,16 @@ func (r *EmergenciaGormRepository) Create(e *entities.Emergency) error {
 	return nil
 }
 
-func (r *EmergenciaGormRepository) FindAll() ([]entities.Emergency, error) {
+func (r *EmergencyRepositoryImpl) FindAll() ([]entities.Emergency, error) {
 	var modelsList []models.EmergencyModel
 
 	if err := r.db.Find(&modelsList).Error; err != nil {
 		return nil, err
 	}
 
-	emergencias := make([]entities.Emergency, 0, len(modelsList))
+	emergencies := make([]entities.Emergency, 0, len(modelsList))
 	for _, m := range modelsList {
-		emergencias = append(emergencias, entities.Emergency{
+		emergencies = append(emergencies, entities.Emergency{
 			ID_EMERGENCIA: m.ID_EMERGENCIA,
 			Descripcion:   m.Descripcion,
 			Fecha:         m.Fecha,
@@ -47,22 +47,22 @@ func (r *EmergenciaGormRepository) FindAll() ([]entities.Emergency, error) {
 		})
 	}
 
-	return emergencias, nil
+	return emergencies, nil
 }
 
-func (r *EmergenciaGormRepository) FindByID(id uint) (*entities.Emergency, error) {
+func (r *EmergencyRepositoryImpl) FindByID(id uint) (*entities.Emergency, error) {
 	var model models.EmergencyModel
 
 	if err := r.db.First(&model, id).Error; err != nil {
 		return nil, err
 	}
 
-	emergencia := &entities.Emergency{
+	emergency := &entities.Emergency{
 		ID_EMERGENCIA: model.ID_EMERGENCIA,
 		Descripcion:   model.Descripcion,
 		Fecha:         model.Fecha,
 		Estado:        model.Estado,
 	}
 
-	return emergencia, nil
+	return emergency, nil
 }
