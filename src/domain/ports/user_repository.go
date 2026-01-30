@@ -1,4 +1,4 @@
-package repositories
+package ports
 
 import "api-go/src/domain/entities"
 
