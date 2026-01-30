@@ -2,13 +2,13 @@ package models
 
 import "time"
 
-type EmergenciaModel struct {
+type EmergencyModel struct {
 	ID_EMERGENCIA uint
 	Descripcion   string
 	Fecha         time.Time
 	Estado        string
 }
 
-func (EmergenciaModel) TableName() string {
+func (EmergencyModel) TableName() string {
 	return "emergencia"
 }

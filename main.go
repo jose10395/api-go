@@ -5,14 +5,14 @@ import (
 	"api-go/src/data/database"
 	"api-go/src/data/repositories"
 	logic "api-go/src/domain/services"
-	httpInterfaces "api-go/src/handlers"
+	handlers "api-go/src/handlers"
+	"api-go/src/routes"
 	"log"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	// fmt.Println("Hola Joven, su hua de API está lista 🚀")
 
 	cfg := config.LoadConfigFromEnv()
 
@@ -23,21 +23,19 @@ func main() {
 
 	r := gin.Default()
 
+	// repositorios
 	userRepository := repositories.NewUserGormRepository(db)
+	emergencyRepository := repositories.NewEmergenciaGormRepository(db)
+
+	// servicios
 	userService := logic.NewUserService(userRepository)
-	userHandler := httpInterfaces.NewUserHandler(userService)
-	userHandler.RegisterRoutes(r)
+	emergencyService := logic.NewEmergencyService(emergencyRepository)
 
-	emergenciaRepository := repositories.NewEmergenciaGormRepository(db)
-	emergenciaService := logic.NewEmergenciaService(emergenciaRepository)
-	emergenciaHandler := httpInterfaces.NewEmergenciaHandler(emergenciaService)
-	emergenciaHandler.RegisterRoutes(r)
+	// handlers
+	userHandler := handlers.NewUserHandler(userService)
+	emergencyHandler := handlers.NewEmergenciaHandler(emergencyService)
 
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hola Joven, su API creo que ya sirve... 🚀",
-		})
-	})
+	routes.SetupRoutes(r, userHandler, emergencyHandler)
 
 	r.Run(":8080")
 }

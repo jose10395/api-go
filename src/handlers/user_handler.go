@@ -19,15 +19,6 @@ func NewUserHandler(userService *logic.UserService) *UserHandler {
 	}
 }
 
-func (h *UserHandler) RegisterRoutes(r *gin.Engine) {
-	users := r.Group("/users")
-	{
-		users.POST("", h.Create)
-		users.GET("", h.FindAll)
-		users.GET("/:id", h.FindByID)
-	}
-}
-
 // POST /users
 func (uh *UserHandler) Create(c *gin.Context) {
 	var input entities.User

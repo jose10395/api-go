@@ -9,35 +9,26 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type EmergenciaHandler struct {
-	emergenciaService *logic.EmergenciaService
+type EmergencyHandler struct {
+	emergencyService *logic.EmergencyService
 }
 
-func NewEmergenciaHandler(emergenciaService *logic.EmergenciaService) *EmergenciaHandler {
-	return &EmergenciaHandler{
-		emergenciaService: emergenciaService,
-	}
-}
-
-func (h *EmergenciaHandler) RegisterRoutes(r *gin.Engine) {
-	emergencias := r.Group("/emergencias")
-	{
-		emergencias.POST("", h.Create)
-		emergencias.GET("", h.FindAll)
-		emergencias.GET("/:id", h.FindByID)
+func NewEmergenciaHandler(emergencyService *logic.EmergencyService) *EmergencyHandler {
+	return &EmergencyHandler{
+		emergencyService: emergencyService,
 	}
 }
 
 // POST /emergencias
-func (uh *EmergenciaHandler) Create(c *gin.Context) {
-	var input entities.Emergencia
+func (uh *EmergencyHandler) Create(c *gin.Context) {
+	var input entities.Emergency
 
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "JSON inválido"})
 		return
 	}
 
-	if err := uh.emergenciaService.Create(&input); err != nil {
+	if err := uh.emergencyService.Create(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -46,7 +37,7 @@ func (uh *EmergenciaHandler) Create(c *gin.Context) {
 }
 
 // GET /emergencias/:id
-func (uh *EmergenciaHandler) FindByID(c *gin.Context) {
+func (uh *EmergencyHandler) FindByID(c *gin.Context) {
 	idParam := c.Param("id")
 	idUint, err := strconv.ParseUint(idParam, 10, 64)
 	if err != nil {
@@ -54,7 +45,7 @@ func (uh *EmergenciaHandler) FindByID(c *gin.Context) {
 		return
 	}
 
-	user, err := uh.emergenciaService.FindByID(uint(idUint))
+	user, err := uh.emergencyService.FindByID(uint(idUint))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -64,8 +55,8 @@ func (uh *EmergenciaHandler) FindByID(c *gin.Context) {
 }
 
 // GET /emergencias
-func (uh *EmergenciaHandler) FindAll(c *gin.Context) {
-	emergencias, err := uh.emergenciaService.FindAll()
+func (uh *EmergencyHandler) FindAll(c *gin.Context) {
+	emergencias, err := uh.emergencyService.FindAll()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

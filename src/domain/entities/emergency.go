@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type Emergencia struct {
+type Emergency struct {
 	ID_EMERGENCIA uint
 	Descripcion   string
 	Fecha         time.Time

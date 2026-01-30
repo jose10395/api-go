@@ -15,8 +15,8 @@ func NewEmergenciaGormRepository(db *gorm.DB) *EmergenciaGormRepository {
 	return &EmergenciaGormRepository{db: db}
 }
 
-func (r *EmergenciaGormRepository) Create(e *entities.Emergencia) error {
-	model := models.EmergenciaModel{
+func (r *EmergenciaGormRepository) Create(e *entities.Emergency) error {
+	model := models.EmergencyModel{
 		Descripcion: e.Descripcion,
 		Fecha:       e.Fecha,
 		Estado:      e.Estado,
@@ -30,16 +30,16 @@ func (r *EmergenciaGormRepository) Create(e *entities.Emergencia) error {
 	return nil
 }
 
-func (r *EmergenciaGormRepository) FindAll() ([]entities.Emergencia, error) {
-	var modelsList []models.EmergenciaModel
+func (r *EmergenciaGormRepository) FindAll() ([]entities.Emergency, error) {
+	var modelsList []models.EmergencyModel
 
 	if err := r.db.Find(&modelsList).Error; err != nil {
 		return nil, err
 	}
 
-	emergencias := make([]entities.Emergencia, 0, len(modelsList))
+	emergencias := make([]entities.Emergency, 0, len(modelsList))
 	for _, m := range modelsList {
-		emergencias = append(emergencias, entities.Emergencia{
+		emergencias = append(emergencias, entities.Emergency{
 			ID_EMERGENCIA: m.ID_EMERGENCIA,
 			Descripcion:   m.Descripcion,
 			Fecha:         m.Fecha,
@@ -50,14 +50,14 @@ func (r *EmergenciaGormRepository) FindAll() ([]entities.Emergencia, error) {
 	return emergencias, nil
 }
 
-func (r *EmergenciaGormRepository) FindByID(id uint) (*entities.Emergencia, error) {
-	var model models.EmergenciaModel
+func (r *EmergenciaGormRepository) FindByID(id uint) (*entities.Emergency, error) {
+	var model models.EmergencyModel
 
 	if err := r.db.First(&model, id).Error; err != nil {
 		return nil, err
 	}
 
-	emergencia := &entities.Emergencia{
+	emergencia := &entities.Emergency{
 		ID_EMERGENCIA: model.ID_EMERGENCIA,
 		Descripcion:   model.Descripcion,
 		Fecha:         model.Fecha,
