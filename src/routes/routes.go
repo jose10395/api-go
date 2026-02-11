@@ -1,20 +1,20 @@
 package routes
 
 import (
-	handlers "api-go/src/adapters/http/handlers"
+	httpPorts "api-go/src/adapters/http/ports"
 
 	"github.com/gin-gonic/gin"
 )
 
 func SetupRoutes(
 	r *gin.Engine,
-	userHandler *handlers.UserHandler,
-	emergencyHandler *handlers.EmergencyHandler,
+	userHandler httpPorts.UserHandlerPort,
+	emergencyHandler httpPorts.EmergencyHandlerPort,
 ) {
 
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "Hola Joven, su API creo que ya sirve... 🚀",
+			"message": "Hola Joven, su API ya sirve... 🚀",
 		})
 	})
 

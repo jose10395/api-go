@@ -5,7 +5,7 @@ import (
 	"api-go/src/adapters/persistence/repositories"
 	logic "api-go/src/domain/usecases"
 	config "api-go/src/infraestructure"
-	"api-go/src/infraestructure/database"
+	database "api-go/src/infraestructure/database"
 	"api-go/src/routes"
 	"log"
 
@@ -22,6 +22,10 @@ func main() {
 	}
 
 	r := gin.Default()
+
+	// redisClient := cache.NewRedisClient(cfg)
+	// cacheRepo := cache.NewRedisCache(redisClient)
+	// userService := logic.NewUserUsecase(userRepository, cacheRepo)
 
 	// repositorios
 	userRepository := repositories.NewUserRepositoryImpl(db)
